@@ -15,19 +15,19 @@ def main(R0: [float], V0: [float], t: int) -> tuple[[float], [float]]:
     print(f"alpha : {round(alpha * (10**5), 4)} x 10^(-5) Km^(-1)")
 
     x = Kepler_U(t, r0, vr0, alpha)
-    print(f"x : {round(x, 4)}")
+    print(f"x : {round(x, 4)} km^(1/2)")
 
     f, g = f_and_g(x, t, r0, alpha)
-    print(f"f : {round(f, 4)} && g : {round(g, 4)}")
+    print(f"f : {round(f, 4)} && g : {round(g, 4)} s^(-1)")
 
     R = f*R0 + g*V0
 
 
     r = np.linalg.norm(R)
-    print(f"r : {r}")
+    print(f"r : {r} km")
 
     fdot, gdot = fdot_and_gdot(x, r, r0, alpha)
-    print(f"fdot : {round(fdot, 4)} && gdot : {round(gdot, 4)}")
+    print(f"fdot : {round(fdot, 4)} s^(-1) && gdot : {round(gdot, 4)}")
 
     V = fdot * R0 + gdot * V0
     print(V)
@@ -114,11 +114,11 @@ V0 = np.asarray(v_0)
 # V0 = np.array([-7.350, 0.4600, 2.470])  # in Km/s
 # t = 3200    # in second 
 
-R, V = r0v0_to_rv(R0, V0, t)
+R, V = main(R0, V0, t)
 
-print(f"Initial Position Vector : {R0[0], R0[1], R0[2]}")
-print(f"Initial Velocity Vector : {V0[0], V0[1], V0[2]}")
-print(f"Time : {t}")
-print(f"Final Position Vector : {R[0], R[1], R[2]}")
-print(f"Final Velocity Vector : {V[0], V[1], V[2]}")
+print(f"Initial Position Vector : {R0[0], R0[1], R0[2]} km")
+print(f"Initial Velocity Vector : {V0[0], V0[1], V0[2]} km/s")
+print(f"Time : {t} second")
+print(f"Final Position Vector : {R[0], R[1], R[2]} km")
+print(f"Final Velocity Vector : {V[0], V[1], V[2]} km/s")
 
