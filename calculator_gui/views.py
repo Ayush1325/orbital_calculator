@@ -121,7 +121,7 @@ def lagrange(request):
             a = float(form.cleaned_data["a"])
             ans = lagrange_coeff.main(m,x,t,r,r0,a)
             context["lg"] = ",".join(map(str, ans))
-           
+
 
     # if a GET (or any other method) we'll create a blank form
     else:
