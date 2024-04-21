@@ -15,4 +15,5 @@ urlpatterns = [
     path("section_d/2", views.lst, name="LST"),
     path("section_f", views.section_f, name="SectionF"),
     path("section_g/1", views.section_g_1, name="Hoffman"),
+    path("lagrange", views.lagrange, name="lagrange"),
 ]

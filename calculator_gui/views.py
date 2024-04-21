@@ -6,7 +6,8 @@ from .tasks import (
     jd_lst,
     sectiona,
     ref_frame_and_coords_transfer,
-    sectionf
+    sectionf,
+    lagrange_coeff,
 )
 
 class SectionB1Form(forms.Form):
@@ -87,11 +88,50 @@ class SectionC2Form(forms.Form):
         widget=forms.TextInput(attrs={"placeholder": "1 2 3"}),
     )
     rotation_angle = forms.FloatField(label="Rotation Angle")
+class Lagrange(forms.Form):
+    m = forms.FloatField(label="M")
+    x = forms.FloatField(label="X")
+    t = forms.FloatField(label="T")
+    r = forms.FloatField(label="R")
+    r0 = forms.FloatField(label="R0")
+    a = forms.FloatField(label="A")
+
 
 
 # Create your views here.
 def home(request):
     return render(request, "home.html")
+
+def lagrange(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = Lagrange(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            m = float(form.cleaned_data["m"])
+            x = float(form.cleaned_data["x"])
+            t = float(form.cleaned_data["t"])
+            r = float(form.cleaned_data["r"])
+            r0 = float(form.cleaned_data["r0"])
+            a = float(form.cleaned_data["a"])
+            ans = lagrange_coeff.main(m,x,t,r,r0,a)
+            context["lg"] = ",".join(map(str, ans))
+           
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = Lagrange()
+
+        context["lg"] = ""
+
+    context["form"] = form
+
+    return render(request, "lagrange.html", context)
 
 
 def section_b_1(request):
