@@ -10,7 +10,20 @@
 
 import numpy as np
 
-def gibbs_method(r1, r2, r3, mu=398600.4418): # Earth's gravitational parameter (km^3/s^2)
+def gibbs_method(r1: np.ndarray, r2: np.ndarray, r3: np.ndarray, mu: float = 398600.4418) -> tuple:
+    """
+    Calculates orbital elements using Gibbs' method of preliminary orbit determination.
+
+    Parameters:
+        r1 (np.ndarray): Position vector at time t1.
+        r2 (np.ndarray): Position vector at time t2.
+        r3 (np.ndarray): Position vector at time t3.
+        mu (float): Standard gravitational parameter of the central body.
+
+    Returns:
+        tuple: Orbital elements (semi-major axis, eccentricity, inclination,
+               longitude of ascending node, argument of periapsis, true anomaly).
+    """
     # Calculate cross products
     N = np.cross(r1, r2)
     D = np.cross(r2, r3)
@@ -63,19 +76,6 @@ def gibbs_method(r1, r2, r3, mu=398600.4418): # Earth's gravitational parameter 
     
     return a, e, np.degrees(i), np.degrees(omega), np.degrees(omega_p), np.degrees(nu)
 
-# Example usage:
-r1 = np.array([6524.834, 6862.875, 6448.296])  # Position vector at time t1
-r2 = np.array([6861.500, 6524.834, 6450.000])  # Position vector at time t2
-r3 = np.array([6448.296, 6862.875, 6524.834])  # Position vector at time t3
-
-a, e, i, omega, omega_p, nu = gibbs_method(r1, r2, r3)
-print("Semi-major axis (km):", a)
-print("Eccentricity:", e)
-print("Inclination (degrees):", i)
-print("Longitude of ascending node (degrees):", omega)
-print("Argument of periapsis (degrees):", omega_p)
-print("True anomaly (degrees):", nu)
-
 
 # Make sure to provide position vectors r1, r2 and r3 
 #   in kilometers. The output will give you the orbital elements:
@@ -90,7 +90,7 @@ print("True anomaly (degrees):", nu)
 import numpy as np
 from scipy.optimize import brentq
 
-def lambert(r1, r2, dt, mu=398600.4418):
+def lambert(r1: np.ndarray, r2: np.ndarray, dt: float, mu: float = 398600.4418) -> tuple:
     """
     Solves Lambert's problem for orbit determination.
     
@@ -113,7 +113,7 @@ def lambert(r1, r2, dt, mu=398600.4418):
         if A > 0:
             return y - np.sqrt(mu) * dt
         else:
-            return y - np.sqrt(-mu) * dt
+            return y + np.sqrt(-mu) * dt
     
     # Solve for x using Brent's method
     x0 = brentq(func, -4 * np.pi, 4 * np.pi, xtol=tol)
@@ -131,15 +131,6 @@ def lambert(r1, r2, dt, mu=398600.4418):
     v2 = (fdot * r2 - r1) / g
     
     return v1, v2
-
-# Example usage:
-r1 = np.array([6524.834, 6862.875, 6448.296])  # Initial position vector
-r2 = np.array([6861.500, 6524.834, 6450.000])  # Final position vector
-dt = 3600  # Time of flight in seconds
-
-v1, v2 = lambert(r1, r2, dt)
-print("Initial velocity vector:", v1)
-print("Final velocity vector:", v2)
 
 
 
