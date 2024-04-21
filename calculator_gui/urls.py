@@ -10,4 +10,5 @@ urlpatterns = [
     path("hoffman", views.hoffman, name="Hoffman"),
     path("julian", views.julian, name="Julian"),
     path("lst", views.lst, name="LST"),
+    path("section_f", views.section_f, name="SectionF"),
 ]
