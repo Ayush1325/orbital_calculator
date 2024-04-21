@@ -9,7 +9,7 @@ import numpy as np
 from numpy import cross, pi
 from numpy.linalg import norm
 
-from scipy.special import hyp2f1
+from scipy.special import hyp2f1 # type: ignore
 
 # from lamberthub.utils.assertions import assert_parameters_are_valid
 

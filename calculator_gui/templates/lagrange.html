@@ -1,0 +1,19 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} {% block content %}
+<form method="post">
+  {% csrf_token %} {{ form|crispy }}
+  <button type="submit" class="button">Calculate</button>
+</form>
+
+<fieldset disabled>
+  <div class="field">
+    <label class="label">Lagrange coeff anf time derivative</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="f g f' g'"value="{{lg}}" />
+    </div>
+  </div>
+
+
+  
+</fieldset>
+{% endblock %}
