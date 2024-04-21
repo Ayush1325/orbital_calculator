@@ -14,4 +14,5 @@ urlpatterns = [
     path("section_a/2", views.kepler_hyp, name="kepler_hyp"),
     path("section_c/1", views.section_c_1, name="inertial to rotating frame"),
     path("section_c/2", views.section_c_2, name="rotating to inertial frame"),
+    path("section_f", views.section_f, name="SectionF"),
 ]

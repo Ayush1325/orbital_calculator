@@ -1,0 +1,13 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} {% block content %}
+<form method="post">
+  {% csrf_token %} {{ form|crispy }}
+  <button type="submit" class="button">Calculate</button>
+</form>
+
+<fieldset disabled>
+
+  <textarea class="textarea" placeholder="x y vx vy">{{traj}}</textarea>
+  
+</fieldset>
+{% endblock %}
