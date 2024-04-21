@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -5,7 +6,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}Orbital Calculator{% endblock %}</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
+	<link rel="stylesheet" href="{% static 'bulma.min.css' %}" />
+	<script src="{% static 'index.js' %}"></script>
 </head>
 
 <body>
@@ -13,7 +15,7 @@
     <div class="navbar-brand">
       <a class="navbar-item" href="/">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Hohmann_transfer_orbit.svg/1200px-Hohmann_transfer_orbit.svg.png"
+					src="{% static 'icon.svg' %}"
           alt="Calculator" />
       </a>
 
