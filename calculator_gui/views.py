@@ -6,8 +6,8 @@ from .tasks import (
     jd_lst,
     sectiona,
     ref_frame_and_coords_transfer,
+    sectionf
 )
-
 
 class SectionB1Form(forms.Form):
     r0 = forms.CharField(
@@ -53,6 +53,14 @@ class LST(forms.Form):
     jul_date = forms.FloatField(label="Julian Date")
     longitude = forms.FloatField(label="Longitude")
     utc_time = forms.FloatField(label="UTC_Time")
+class SectionF(forms.Form):
+    x0=  forms.FloatField(label="X0(Initial X component)")
+    y0=  forms.FloatField(label="Y0(Initial Y component)")
+    vx0 = forms.FloatField(label="Vx0(Initial X velocity component)")
+    vy0 = forms.FloatField(label="Vy0(Initial y velocity component)")
+    t0 = forms.FloatField(label="T0(Initial Time)")
+    tmax = forms.FloatField(label="Tmax(Final Time)")
+    dt = forms.FloatField(label="Step Size")
 
 
 class Kepler_hyp(forms.Form):
@@ -288,7 +296,6 @@ def lst(request):
 
     return render(request, "lst.html", context)
 
-
 def section_a(request):
     return render(request, "section_a.html")
 
@@ -409,3 +416,36 @@ def section_c_2(request):
     context["form"] = form
 
     return render(request, "section_c_2.html", context)
+
+
+def section_f(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = SectionF(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            x0= float(form.cleaned_data["x0"])
+            y0 = float(form.cleaned_data["y0"])
+            vx0 = float(form.cleaned_data["vx0"])
+            vy0 = float(form.cleaned_data["vy0"])
+            t0 = float(form.cleaned_data["t0"])
+            tmax = float(form.cleaned_data["tmax"])
+            dt = float(form.cleaned_data["dt"])
+            ans = sectionf.calc(x0,y0,vx0,vy0,t0,tmax,dt)
+            context["traj"] = ",\n".join(map(str, ans))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = SectionF()
+
+        context["traj"] = ""
+
+
+    context["form"] = form
+
+    return render(request, "section_f.html", context)
