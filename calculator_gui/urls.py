@@ -8,7 +8,7 @@ urlpatterns = [
     path("section_b/2", views.section_b_2, name="section b 1"),
     path("section_b/3", views.section_b_3, name="section b 1"),
     path("hoffman", views.hoffman, name="Hoffman"),
-    path("julian", views.julian, name="Julian"),
-    path("lst", views.lst, name="LST"),
+    path("section_d/1", views.julian, name="Julian"),
+    path("section_d/2", views.lst, name="LST"),
     path("section_f", views.section_f, name="SectionF"),
 ]
