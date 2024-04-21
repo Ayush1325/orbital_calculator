@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django import forms
-from .tasks import sectionb,hohmann_transfer,jd_lst
+from .tasks import sectionb,hohmann_transfer,jd_lst, sectiona
 
 class SectionBForm(forms.Form):
     r0 = forms.CharField(label="R0", widget=forms.TextInput(attrs={'placeholder': '1 2 3'}))
@@ -21,6 +21,12 @@ class LST(forms.Form):
     jul_date =  forms.FloatField(label="Julian Date")
     longitude =  forms.FloatField(label="Longitude")
     utc_time = forms.FloatField(label="UTC_Time")
+class Kepler_hyp(forms.Form):
+    m =  forms.FloatField(label="M")
+    e =  forms.FloatField(label="E")
+class Kepler_Eqn(forms.Form):
+    m =  forms.FloatField(label="M")
+    e =  forms.FloatField(label="E")
 
 
 
@@ -156,3 +162,66 @@ def lst(request):
     context["form"] = form
 
     return render(request, "lst.html", context)
+
+def section_a(request):
+    return render(request,"section_a.html")
+
+def kepler_hyp(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form =Kepler_hyp(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            m = float(form.cleaned_data["m"])
+            e= float(form.cleaned_data["e"])
+            tol=1e-9
+            max=1000
+            ans = sectiona.kepler_hyperbolic(e,m,tol,max)
+            context["e_m"] = ans
+
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = Kepler_hyp()
+
+        context["e_m"] = ""
+
+
+    context["form"] = form
+
+    return render(request, "kepler_hyp.html", context)
+def kepler_eqn(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form =Kepler_Eqn(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            m = float(form.cleaned_data["m"])
+            e = float(form.cleaned_data["e"])
+            tol=1e-9
+            max=1000
+            ans = sectiona.kepler_equation(e,m,tol,max)
+            context["em"] = ans
+
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = Kepler_Eqn()
+
+        context["em"] = ""
+
+
+    context["form"] = form
+
+    return render(request, "kepler_eqn.html", context)
+    
