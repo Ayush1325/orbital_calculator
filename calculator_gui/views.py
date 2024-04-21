@@ -198,7 +198,7 @@ def section_b_3(request):
     return render(request, "section_b_3.html", context)
 
 
-def hoffman(request):
+def section_g_1(request):
     context = {}
     # if this is a POST request we need to process the form data
     if request.method == "POST":
