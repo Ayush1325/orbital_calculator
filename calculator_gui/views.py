@@ -8,7 +8,9 @@ from .tasks import (
     ref_frame_and_coords_transfer,
     sectionf,
     lagrange_coeff,
+    lambert
 )
+
 
 class SectionB1Form(forms.Form):
     r0 = forms.CharField(
@@ -54,9 +56,11 @@ class LST(forms.Form):
     jul_date = forms.FloatField(label="Julian Date")
     longitude = forms.FloatField(label="Longitude")
     utc_time = forms.FloatField(label="UTC_Time")
+
+
 class SectionF(forms.Form):
-    x0=  forms.FloatField(label="X0(Initial X component)")
-    y0=  forms.FloatField(label="Y0(Initial Y component)")
+    x0 = forms.FloatField(label="X0(Initial X component)")
+    y0 = forms.FloatField(label="Y0(Initial Y component)")
     vx0 = forms.FloatField(label="Vx0(Initial X velocity component)")
     vy0 = forms.FloatField(label="Vy0(Initial y velocity component)")
     t0 = forms.FloatField(label="T0(Initial Time)")
@@ -88,6 +92,8 @@ class SectionC2Form(forms.Form):
         widget=forms.TextInput(attrs={"placeholder": "1 2 3"}),
     )
     rotation_angle = forms.FloatField(label="Rotation Angle")
+
+
 class Lagrange(forms.Form):
     m = forms.FloatField(label="M")
     x = forms.FloatField(label="X")
@@ -97,10 +103,21 @@ class Lagrange(forms.Form):
     a = forms.FloatField(label="A")
 
 
+class LambertForm(forms.Form):
+    mu = forms.FloatField(label="Mu")
+    r1 = forms.CharField(
+        label="R1", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+    r2 = forms.CharField(
+        label="R2", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+    tof = forms.FloatField(label="Tof")
+
 
 # Create your views here.
 def home(request):
     return render(request, "home.html")
+
 
 def lagrange(request):
     context = {}
@@ -119,9 +136,8 @@ def lagrange(request):
             r = float(form.cleaned_data["r"])
             r0 = float(form.cleaned_data["r0"])
             a = float(form.cleaned_data["a"])
-            ans = lagrange_coeff.main(m,x,t,r,r0,a)
+            ans = lagrange_coeff.main(m, x, t, r, r0, a)
             context["lg"] = ",".join(map(str, ans))
-
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -336,6 +352,7 @@ def lst(request):
 
     return render(request, "lst.html", context)
 
+
 def section_a(request):
     return render(request, "section_a.html")
 
@@ -469,14 +486,14 @@ def section_f(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            x0= float(form.cleaned_data["x0"])
+            x0 = float(form.cleaned_data["x0"])
             y0 = float(form.cleaned_data["y0"])
             vx0 = float(form.cleaned_data["vx0"])
             vy0 = float(form.cleaned_data["vy0"])
             t0 = float(form.cleaned_data["t0"])
             tmax = float(form.cleaned_data["tmax"])
             dt = float(form.cleaned_data["dt"])
-            ans = sectionf.calc(x0,y0,vx0,vy0,t0,tmax,dt)
+            ans = sectionf.calc(x0, y0, vx0, vy0, t0, tmax, dt)
             context["traj"] = ",\n".join(map(str, ans))
 
     # if a GET (or any other method) we'll create a blank form
@@ -485,7 +502,37 @@ def section_f(request):
 
         context["traj"] = ""
 
-
     context["form"] = form
 
     return render(request, "section_f.html", context)
+
+
+def section_b_5(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = LambertForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            r1 = list(map(float, form.cleaned_data["r1"].split(" ")))
+            r2 = list(map(float, form.cleaned_data["r2"].split(" ")))
+            mu = float(form.cleaned_data["mu"])
+            tof = float(form.cleaned_data["tof"])
+            v1, v2 = lambert.main(mu, r1, r2, tof)
+            context["v1_val"] = ", ".join(map(str, v1))
+            context["v2_val"] = ", ".join(map(str, v2))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = LambertForm()
+
+        context["v1_val"] = ""
+        context["v2_val"] = ""
+
+    context["form"] = form
+
+    return render(request, "section_b_5.html", context)

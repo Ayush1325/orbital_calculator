@@ -25,11 +25,12 @@ def main(
     maxiter=35,
     atol=1e-5,
     rtol=1e-7,
-    full_output=False,
-) -> list[list[float], list[float]]:
+) -> tuple[list[float], list[float]]:
 
     # Check that input parameters are safe
     # assert_parameters_are_valid(mu, r1, r2, tof, M)
+    r1 = np.array(r1)
+    r2 = np.array(r2)
 
     # Chord
     c = r2 - r1
@@ -61,7 +62,7 @@ def main(
     T = np.sqrt(2 * mu / s**3) * tof
 
     # Find solutions and filter them
-    x, y, numiter, tpi = _find_xy(ll, T, M, maxiter, atol, rtol, low_path)
+    x, y, _numiter, _tpi = _find_xy(ll, T, M, maxiter, atol, rtol, low_path)
 
     # Reconstruct
     gamma = np.sqrt(mu * s / 2)
@@ -76,7 +77,7 @@ def main(
     v1 = V_r1 * (r1 / r1_norm) + V_t1 * i_t1
     v2 = V_r2 * (r2 / r2_norm) + V_t2 * i_t2
 
-    return (v1, v2, numiter, tpi) if full_output is True else (v1, v2)
+    return v1, v2
 
 
 def _reconstruct(x, y, r1, r2, ll, gamma, rho, sigma):
