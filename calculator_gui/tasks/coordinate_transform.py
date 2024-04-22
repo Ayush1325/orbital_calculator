@@ -1,14 +1,18 @@
-import numpy as np
-
 """
-This module performs coordinate transformations between Geocentric equatorial and perifocal frames.
+This module performs coordinate transformations between
+Geocentric equatorial and perifocal frames.
 Name    : Tella Hemanth
 Admn No : 20JE1027
 """
 
+# pylint: disable=invalid-name,pointless-string-statement
+
+import numpy as np
+
 def compute_transformation_matrix(i, omega, Omega):
     """
-    Compute the transformation matrix for converting between geocentric equatorial and perifocal frames.
+    Compute the transformation matrix for converting between
+    geocentric equatorial and perifocal frames.
 
     Args:
         i (float): Inclination angle in degrees.
@@ -27,7 +31,7 @@ def compute_transformation_matrix(i, omega, Omega):
     R1 = np.array([[1, 0, 0],
                    [0, np.cos(i), np.sin(i)],
                    [0, -np.sin(i), np.cos(i)]])
-    
+
     R3_omega = np.array([[np.cos(omega), np.sin(omega), 0],
                          [-np.sin(omega), np.cos(omega), 0],
                          [0, 0, 1]])
