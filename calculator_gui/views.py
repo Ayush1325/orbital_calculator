@@ -8,7 +8,8 @@ from .tasks import (
     ref_frame_and_coords_transfer,
     sectionf,
     lagrange_coeff,
-    lambert
+    lambert,
+    coordinate_transform
 )
 
 
@@ -112,6 +113,18 @@ class LambertForm(forms.Form):
         label="R2", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
     )
     tof = forms.FloatField(label="Tof")
+
+
+class SectionC34Form(forms.Form):
+    pos_vec = forms.CharField(
+        label="Position Vector", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+    vel_vec = forms.CharField(
+        label="Velocity Vector", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+    i = forms.FloatField(label="Inclination angle")
+    omega1 = forms.FloatField(label="Argument of periapsis angle in degrees")
+    omega2 = forms.FloatField(label="Longitude of ascending node angle in degrees")
 
 
 # Create your views here.
@@ -536,3 +549,67 @@ def section_b_5(request):
     context["form"] = form
 
     return render(request, "section_b_5.html", context)
+
+
+def section_c_3(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = SectionC34Form(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            pos_vec = list(map(float, form.cleaned_data["pos_vec"].split(" ")))
+            vel_vec = list(map(float, form.cleaned_data["vel_vec"].split(" ")))
+            i = float(form.cleaned_data["i"])
+            omega1 = float(form.cleaned_data["omega1"])
+            omega2 = float(form.cleaned_data["omega2"])
+            p, v = coordinate_transform.geocentric_to_perifocal(pos_vec, vel_vec, i, omega1, omega2)
+            context["pos_vec"] = ", ".join(map(str, p))
+            context["vel_vec"] = ", ".join(map(str, v))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = SectionC34Form()
+
+        context["pos_vec"] = ""
+        context["vel_vec"] = ""
+
+    context["form"] = form
+
+    return render(request, "section_c_3.html", context)
+
+
+def section_c_4(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = SectionC34Form(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            pos_vec = list(map(float, form.cleaned_data["pos_vec"].split(" ")))
+            vel_vec = list(map(float, form.cleaned_data["vel_vec"].split(" ")))
+            i = float(form.cleaned_data["i"])
+            omega1 = float(form.cleaned_data["omega1"])
+            omega2 = float(form.cleaned_data["omega2"])
+            p, v = coordinate_transform.geocentric_to_perifocal(pos_vec, vel_vec, i, omega1, omega2)
+            context["pos_vec"] = ", ".join(map(str, p))
+            context["vel_vec"] = ", ".join(map(str, v))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = SectionC34Form()
+
+        context["pos_vec"] = ""
+        context["vel_vec"] = ""
+
+    context["form"] = form
+
+    return render(request, "section_c_4.html", context)
