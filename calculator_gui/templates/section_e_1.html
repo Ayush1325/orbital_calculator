@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="button">Calculate</button>
+  </form>
+
+<fieldset disabled>
+  
+<div class="field">
+  <label class="label">Planet Name</label>
+  <div class="control">
+		<input class="input" type="text" value="{{pn}}">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Year</label>
+  <div class="control">
+		<input class="input" type="text" value="{{y}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Month Name</label>
+  <div class="control">
+		<input class="input" type="text" value="{{mn}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Day</label>
+  <div class="control">
+		<input class="input" type="text" value="{{d}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Hour</label>
+  <div class="control">
+		<input class="input" type="text" value="{{hr}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Minute</label>
+  <div class="control">
+		<input class="input" type="text" value="{{min}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Second</label>
+  <div class="control">
+		<input class="input" type="text" value="{{sec}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Julian Day</label>
+  <div class="control">
+		<input class="input" type="text" value="{{jd}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Angular Momentum</label>
+  <div class="control">
+		<input class="input" type="text" value="{{h}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Eccentricity</label>
+  <div class="control">
+		<input class="input" type="text" value="{{e}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Right ascension of ascending node</label>
+  <div class="control">
+		<input class="input" type="text" value="{{ra}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Inlcination to the ecliptic</label>
+  <div class="control">
+		<input class="input" type="text" value="{{inc}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Argument of perihelion</label>
+  <div class="control">
+		<input class="input" type="text" value="{{arg}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">True anomaly</label>
+  <div class="control">
+		<input class="input" type="text" value="{{tr}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Semimajor Axis</label>
+  <div class="control">
+		<input class="input" type="text" value="{{semi_major}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Longitude of perihelion</label>
+  <div class="control">
+		<input class="input" type="text" value="{{long}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Mean Longitude</label>
+  <div class="control">
+		<input class="input" type="text" value="{{mlong}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Mean anomaly</label>
+  <div class="control">
+		<input class="input" type="text" value="{{ma}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Eccentric Anomaly</label>
+  <div class="control">
+		<input class="input" type="text" value="{{ea}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Position Vector</label>
+  <div class="control">
+		<input class="input" type="text" value="{{pv}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Magnitude of Position Vector</label>
+  <div class="control">
+		<input class="input" type="text" value="{{mag}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Velocity</label>
+  <div class="control">
+		<input class="input" type="text" value="{{vel}}">
+  </div>
+</div>
+<div class="field">
+  <label class="label">Magnitude of Velocity</label>
+  <div class="control">
+		<input class="input" type="text" value="{{mvel}}">
+  </div>
+</div>
+
+</fieldset>
+{% endblock %}
