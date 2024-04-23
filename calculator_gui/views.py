@@ -11,7 +11,8 @@ from .tasks import (
     lambert,
     coordinate_transform,
     section_b_d_e,
-    universal_kepler
+    universal_kepler,
+    section_e,
 )
 
 
@@ -154,6 +155,19 @@ class SectionB5Form(forms.Form):
         label="R2", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
     )
     dt = forms.FloatField(label="DT")
+
+
+class SectionE(forms.Form):
+    planet_id = forms.IntegerField(
+        label="Planet Id",
+        widget=forms.TextInput(attrs={"placeholder": "planet id for 1st planet is 0"}),
+    )
+    year = forms.IntegerField(label="Year")
+    month = forms.IntegerField(label="Month")
+    day = forms.IntegerField(label="Day")
+    hour = forms.IntegerField(label="Hour")
+    minute = forms.IntegerField(label="Minute")
+    second = forms.IntegerField(label="Second")
 
 
 # Create your views here.
@@ -714,6 +728,82 @@ def section_b_5(request):
     context["form"] = form
 
     return render(request, "section_b_5.html", context)
+
+
+def section_e_1(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = SectionE(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            planet_id = int(form.cleaned_data["planet_id"])
+            year = int(form.cleaned_data["year"])
+            month = int(form.cleaned_data["month"])
+            day = int(form.cleaned_data["day"])
+            hour = int(form.cleaned_data["hour"])
+            minute = int(form.cleaned_data["minute"])
+            second = int(form.cleaned_data["second"])
+            ans = section_e.main(planet_id, year, month, day, hour, minute, second)
+            context["pn"] = ans[0]
+            context["y"] = ans[1]
+            context["mn"] = ans[2]
+            context["d"] = ans[3]
+            context["hr"] = ans[4]
+            context["min"] = ans[5]
+            context["sec"] = ans[6]
+            context["jd"] = ans[7]
+            context["h"] = ans[8]
+            context["e"] = ans[9]
+            context["ra"] = ans[10]
+            context["inc"] = ans[11]
+            context["arg"] = ans[12]
+            context["tr"] = ans[13]
+            context["semi_major"] = ans[14]
+            context["long"] = ans[15]
+            context["mlong"] = ans[16]
+            context["ma"] = ans[17]
+            context["ea"] = ans[18]
+            context["pv"] = ans[19]
+            context["mag"] = ans[20]
+            context["vel"] = ans[21]
+            context["mvel"] = ans[22]
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = SectionE()
+
+        context["pn"] = ""
+        context["y"] = ""
+        context["mn"] = ""
+        context["d"] = ""
+        context["hr"] = ""
+        context["min"] = ""
+        context["sec"] = ""
+        context["jd"] = ""
+        context["h"] = ""
+        context["e"] = ""
+        context["ra"] = ""
+        context["inc"] = ""
+        context["arg"] = ""
+        context["tr"] = ""
+        context["semi_major"] = ""
+        context["long"] = ""
+        context["mlong"] = ""
+        context["ma"] = ""
+        context["ea"] = ""
+        context["pv"] = ""
+        context["mag"] = ""
+        context["vel"] = ""
+        context["mvel"] = ""
+
+    context["form"] = form
+
+    return render(request, "section_e_1.html", context)
 
 
 def section_a_3(request):
