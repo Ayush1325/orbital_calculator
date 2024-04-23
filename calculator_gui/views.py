@@ -9,7 +9,8 @@ from .tasks import (
     sectionf,
     lagrange_coeff,
     lambert,
-    coordinate_transform
+    coordinate_transform,
+    section_b_d_e,
 )
 
 
@@ -104,7 +105,7 @@ class Lagrange(forms.Form):
     a = forms.FloatField(label="A")
 
 
-class LambertForm(forms.Form):
+class SectionG3Form(forms.Form):
     mu = forms.FloatField(label="Mu")
     r1 = forms.CharField(
         label="R1", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
@@ -125,6 +126,28 @@ class SectionC34Form(forms.Form):
     i = forms.FloatField(label="Inclination angle")
     omega1 = forms.FloatField(label="Argument of periapsis angle in degrees")
     omega2 = forms.FloatField(label="Longitude of ascending node angle in degrees")
+
+
+class SectionB4Form(forms.Form):
+    r1 = forms.CharField(
+        label="R1", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+    r2 = forms.CharField(
+        label="R2", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+    r3 = forms.CharField(
+        label="R3", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+
+
+class SectionB5Form(forms.Form):
+    r1 = forms.CharField(
+        label="R1", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+    r2 = forms.CharField(
+        label="R2", widget=forms.TextInput(attrs={"placeholder": "1 2 3"})
+    )
+    dt = forms.FloatField(label="DT")
 
 
 # Create your views here.
@@ -520,12 +543,12 @@ def section_f(request):
     return render(request, "section_f.html", context)
 
 
-def section_b_5(request):
+def section_g_3(request):
     context = {}
     # if this is a POST request we need to process the form data
     if request.method == "POST":
         # create a form instance and populate it with data from the request:
-        form = LambertForm(request.POST)
+        form = SectionG3Form(request.POST)
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
@@ -541,14 +564,14 @@ def section_b_5(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = LambertForm()
+        form = SectionG3Form()
 
         context["v1_val"] = ""
         context["v2_val"] = ""
 
     context["form"] = form
 
-    return render(request, "section_b_5.html", context)
+    return render(request, "section_g_3.html", context)
 
 
 def section_c_3(request):
@@ -567,7 +590,9 @@ def section_c_3(request):
             i = float(form.cleaned_data["i"])
             omega1 = float(form.cleaned_data["omega1"])
             omega2 = float(form.cleaned_data["omega2"])
-            p, v = coordinate_transform.geocentric_to_perifocal(pos_vec, vel_vec, i, omega1, omega2)
+            p, v = coordinate_transform.geocentric_to_perifocal(
+                pos_vec, vel_vec, i, omega1, omega2
+            )
             context["pos_vec"] = ", ".join(map(str, p))
             context["vel_vec"] = ", ".join(map(str, v))
 
@@ -599,7 +624,9 @@ def section_c_4(request):
             i = float(form.cleaned_data["i"])
             omega1 = float(form.cleaned_data["omega1"])
             omega2 = float(form.cleaned_data["omega2"])
-            p, v = coordinate_transform.geocentric_to_perifocal(pos_vec, vel_vec, i, omega1, omega2)
+            p, v = coordinate_transform.geocentric_to_perifocal(
+                pos_vec, vel_vec, i, omega1, omega2
+            )
             context["pos_vec"] = ", ".join(map(str, p))
             context["vel_vec"] = ", ".join(map(str, v))
 
@@ -613,3 +640,71 @@ def section_c_4(request):
     context["form"] = form
 
     return render(request, "section_c_4.html", context)
+
+
+def section_b_4(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = SectionB4Form(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            r1 = list(map(float, form.cleaned_data["r1"].split(" ")))
+            r2 = list(map(float, form.cleaned_data["r2"].split(" ")))
+            r3 = list(map(float, form.cleaned_data["r3"].split(" ")))
+            sma, e, i, l, ap, ta = section_b_d_e.gibbs_method(r1, r2, r3)
+            context["sma"] = sma
+            context["e"] = e
+            context["i"] = i
+            context["l"] = l
+            context["ap"] = ap
+            context["ta"] = ta
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = SectionB4Form()
+
+        context["sma"] = ""
+        context["e"] = ""
+        context["i"] = ""
+        context["l"] = ""
+        context["ap"] = ""
+        context["ta"] = ""
+
+    context["form"] = form
+
+    return render(request, "section_b_4.html", context)
+
+
+def section_b_5(request):
+    context = {}
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = SectionB5Form(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            r1 = list(map(float, form.cleaned_data["r1"].split(" ")))
+            r2 = list(map(float, form.cleaned_data["r2"].split(" ")))
+            dt = float(form.cleaned_data["dt"])
+            v1, v2 = section_b_d_e.lambert(r1, r2, dt)
+            context["v1_val"] = ", ".join(map(str, v1))
+            context["v2_val"] = ", ".join(map(str, v2))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = SectionB5Form()
+
+        context["v1_val"] = ""
+        context["v2_val"] = ""
+
+    context["form"] = form
+
+    return render(request, "section_b_5.html", context)

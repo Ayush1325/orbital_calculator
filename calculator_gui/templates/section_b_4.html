@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="button">Calculate</button>
+  </form>
+
+<fieldset disabled>
+  
+<div class="field">
+  <label class="label">Semi-major Axis</label>
+  <div class="control">
+		<input class="input" type="text" value="{{sma}}">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Eccentricity</label>
+  <div class="control">
+		<input class="input" type="text" value="{{e}}">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Inclination</label>
+  <div class="control">
+		<input class="input" type="text" value="{{i}}">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Longitude of ascending node</label>
+  <div class="control">
+		<input class="input" type="text" value="{{l}}">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Argument of periapsis</label>
+  <div class="control">
+		<input class="input" type="text" value="{{ap}}">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">True anomaly</label>
+  <div class="control">
+		<input class="input" type="text" value="{{ta}}">
+  </div>
+</div>
+
+</fieldset>
+{% endblock %}
