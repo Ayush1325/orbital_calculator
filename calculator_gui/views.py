@@ -752,7 +752,7 @@ def section_e_1(request):
             context["pn"] = ans[0]
             context["y"] = ans[1]
             context["mn"] = ans[2]
-            context["d"] = ans[3]>>>>>>> main
+            context["d"] = ans[3]
             context["hr"] = ans[4]
             context["min"] = ans[5]
             context["sec"] = ans[6]
