@@ -12,6 +12,7 @@ from .tasks import (
     coordinate_transform,
     section_b_d_e,
     section_e,
+    universal_kepler
 )
 
 
@@ -77,6 +78,11 @@ class Kepler_hyp(forms.Form):
 
 
 class Kepler_Eqn(forms.Form):
+    m = forms.FloatField(label="M")
+    e = forms.FloatField(label="E")
+
+
+class UniversalKepler(forms.Form):
     m = forms.FloatField(label="M")
     e = forms.FloatField(label="E")
 
@@ -746,7 +752,7 @@ def section_e_1(request):
             context["pn"] = ans[0]
             context["y"] = ans[1]
             context["mn"] = ans[2]
-            context["d"] = ans[3]
+            context["d"] = ans[3]>>>>>>> main
             context["hr"] = ans[4]
             context["min"] = ans[5]
             context["sec"] = ans[6]
@@ -798,3 +804,26 @@ def section_e_1(request):
     context["form"] = form
 
     return render(request, "section_e_1.html", context)
+
+
+def section_a_3(request):
+        form = UniversalKepler(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            m = float(form.cleaned_data["m"])
+            e = float(form.cleaned_data["e"])
+            ans = universal_kepler.main(e, m)
+            context["em"] = ans
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = UniversalKepler()
+
+        context["em"] = ""
+
+    context["form"] = form
+
+    return render(request, "section_a_3.html", context)
