@@ -2,7 +2,6 @@ from numpy import sqrt, cbrt, pi, sin, cos, arcsin
 
 
 def solve_cubic(a, c, d):
-    assert(a > 0 and c > 0)
     p = c/a
     q = d/a
     k = sqrt( q**2/4 + p**3/27 )
@@ -17,8 +16,6 @@ def fun(e, M):
     return n*arcsin(s)    
 
 def solve_kepler_equation(e, M):
-    assert(0 <= e < 1)
-    assert(0 <= M <= pi) 
     f = lambda E: E - e*sin(E) - M 
     E = fun(e, M) 
     tolerance = 1e-10 
@@ -32,5 +29,7 @@ def solve_kepler_equation(e, M):
 
 if __name__=='__main__':
 
+    #keep the eccentricty e:(0 <= e < 1)
+    #keep the Mean anomoly M:(0 <= M <= pi) 
     print(solve_kepler_equation(0.123, 0.343))
 
