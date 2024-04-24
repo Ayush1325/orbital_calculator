@@ -84,6 +84,12 @@ def gibbs_method(r1: np.ndarray, r2: np.ndarray, r3: np.ndarray, mu: float = 398
 
 
 
+#KINSHUK VERMA
+#20JE0487
+
+
+#SECTION B
+
 # --------------------------E-------------------------
 # Solution of Lambert’s problem for  orbit determination
 
